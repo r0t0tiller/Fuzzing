@@ -1,0 +1,5 @@
+﻿  taint.cpp
+  exploitable.cpp
+  Generating Code...
+     Creating library C:\Fuzzing\Setup\MSEC\sourceCode@%sourceCode\MSECDbgExts\Publish\Components\x86\Debug\MSEC.lib and object C:\Fuzzing\Setup\MSEC\sourceCode@%sourceCode\MSECDbgExts\Publish\Components\x86\Debug\MSEC.exp
+  MSECDbgExts32.vcxproj -> C:\Fuzzing\Setup\MSEC\sourceCode@%sourceCode\MSECDbgExts\Publish\Components\x86\Debug\MSEC.dll

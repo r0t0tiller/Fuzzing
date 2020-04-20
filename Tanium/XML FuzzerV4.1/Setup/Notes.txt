@@ -1,0 +1,44 @@
+* Patch Client(TaniumClient) Application to run the SOAP server without the Tanium Server Connected:
+	Functions:
+	sub_432900 proc near - Server Port
+	sub_4342C0 proc near - (-c)
+	loc_440F67: - ClientSOAPPort
+	loc_440F35: - 127.0.0.1
+	loc_6DA130 - Start ClientSOAP pump
+
+
+
+
+	_main -> sub_444470 -> sub_43EB90 -> sub_6D9690 -> Start ClientSOAP pump
+
+
+* Command line args = -c, -m
+
+
+Side Note:
+Very Interesting Function in TaniumServer(TaniumReciever)
+sub_140237A70 proc near = SOAP/Server Init
+
+
+New Plan:
+
+* Fuzz the Tanium Server (TaniumReceiver)
+
+Process:
+	1. Start the Tanium Server Service
+	2. Attach the TaniumReciever.exe with pykd
+	3. Send malformed XML (POST) to the Tanium Server (radamsa)
+	4. Catch the crash
+		* Get register data
+		* Load !exploitable
+		* Log crash data output and poc.xml
+	5. Restart the TaniumReciever.exe
+	6. Wait 30 seconds for Server to come back online
+	7. Re-run the fuzzer
+
+Fuzzing Setup:
+
+1. Tanium Server VM
+2. Fuzzer with malformed XML testcases sent over the wire to the Tanium Server
+3. Harness that detects crashes and loads !exploitable when access violation occurs
+4. Status_Checker that checks if server is online/offline

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SOAP-ENV:Body>
+    <typens:tanium_soap_request xmlns:typens="urn:TaniumSOAP">
+      <command>GetObject</command>
+      <object_list>
+        <sensors>
+          <sensor>
+            <name>Computer Name</name>
+          </sensor>
+        </sensors>
+      </object_list>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+        <include_hidden_flag>0</include_hidden_flag>
+      </options>
+    </typens:tanium_soap_request>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

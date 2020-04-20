@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-697-ee21df9ffaec0f970ae4e5ca91047ec3cbd6c37ec88eaeb16852e671d08183b6cf11649dc8ebe5e3d09b4fb4b9901a7c672554499e66a259f921b3a5e260d0b6</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <sensors>
+          <sensor>
+            <id>3</id>
+            <name>Computer Name</name>
+            <hash>3409330187</hash>
+            <string_count>5</string_count>
+            <category>Reserved</category>
+            <description>The assigned name of the client machine.
+Example: workstation-1.company.com</description>
+            <queries>
+              <query>
+                <platform>Windows</platform>
+                <script>select CSName from win32_operatingsystem</script>
+                <script_type>WMIQuery</script_type>
+              </query>
+            </queries>
+            <source_id>0</source_id>
+            <parameter_definition></parameter_definition>
+            <value_type>String</value_type>
+            <max_age_seconds>86400</max_age_seconds>
+            <ignore_case_flag>1</ignore_case_flag>
+            <hidden_flag>0</hidden_flag>
+            <exclude_from_parse_flag>0</exclude_from_parse_flag>
+            <delimiter></delimiter>
+          </sensor>
+        </sensors>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <include_hidden_flag>0</include_hidden_flag>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

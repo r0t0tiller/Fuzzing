@@ -1,0 +1,43 @@
+Plan:
+
+* Fuzzing of the Tanium Server (TaniumReceiver)
+
+Process:
+	1. Start the Tanium Server Service
+	2. Attach the TaniumReciever.exe with pykd
+	3. Send malformed XML (POST) to the Tanium Server (radamsa)
+	4. Catch the crash
+		* Get register data
+		* Load !exploitable
+		* Log crash data output and poc.xml
+	5. Restart the TaniumReciever.exe
+	6. Wait 30 seconds for Server to come back online
+	7. Re-run the fuzzer
+
+Fuzzing Setup:
+
+1. Tanium Server VM
+2. Fuzzer with malformed XML testcases sent over the wire to the Tanium Server
+3. Harness that detects crashes and loads !exploitable when access violation occurs
+4. Status_Checker that checks if server is online/offline
+5. Run the Fuzzer on a server indefinitely
+
+
+Mutators:
+
+1. radamsa (https://gitlab.com/akihe/radamsa)
+2. dharma (https://github.com/MozillaSecurity/dharma)
+
+
+Installation:
+
+Python 2.7 x64
+pip install requests
+pykd (PS C:\Python27> .\python.exe -m pip install pykd==0.3.2)
+Visual Studio 2017
+WinDBG
+Visual C++ Redistributable for Visual Studio 2012 Update 4
+Visual C++ Redistributable for Visual Studio 2015
+Visual C++ Redistributable Packages for Visual Studio 2013
+Compile MSEC.dll for x64
+Enable PAGEHEAP on TaniumReceiver.exe (.\gflags.exe /p /enable C:\Program Files\Tanium\Tanium Server\TaniumReceiver.exe /full)
