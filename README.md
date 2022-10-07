@@ -1,2 +1,2 @@
-# Fuzzers
+# Fuzzing
 Fuzzing Development
