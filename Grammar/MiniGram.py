@@ -86,9 +86,7 @@ def expand_tree_once(tree, grammar, fast_path):
 
     new_child = expand_tree_once(children[child_to_be_expanded], grammar, fast_path)
     
-    new_children = (children[:child_to_be_expanded] + 
-                    [new_child] +
-                    children[child_to_be_expanded + 1:])
+    new_children = (children[:child_to_be_expanded] + [new_child] + children[child_to_be_expanded + 1:])
                     
     new_tree = (symbol, new_children)
 
@@ -124,5 +122,4 @@ def fuzz():
     final = all_terminals(tree)
     return final
 
-while True:
-    print(fuzz())
+print(fuzz())
