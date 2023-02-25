@@ -34,11 +34,21 @@ def nonterminals(expansion):
 def fuzz(depth, attempts):
     term = START_SYMBOL
     while len(nonterminals(term)) > 0:
+        
+        # print("term: " + str(term))
+
         symbol_to_expand = random.choice(nonterminals(term))
         expansions = Grammar[symbol_to_expand]
         expansion = random.choice(expansions)
 
         new_term = term.replace(symbol_to_expand, expansion, 1)
+
+        # print("symbol_to_expand: " + str(symbol_to_expand))
+        # print("expansions: " + str(expansions))
+        # print("expansion: " + str(expansion))
+        # print("new_term: " + str(new_term))
+
+        # input()
 
         if len(nonterminals(new_term)) < depth:
             term = new_term
@@ -47,8 +57,6 @@ def fuzz(depth, attempts):
             expansion_trials += 1
             if expansion_trials >= attempts:
                 return None
-
     return term
 
-while True:
-    print(fuzz(10, 100))
+print(fuzz(10, 10))
