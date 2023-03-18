@@ -14,12 +14,15 @@ fn expand_symbol(symbol: &str) {
     let extract_data = Regex::new(r"(.*)(<[a-zA-Z_]*>)(.*)").unwrap();
     let groups = extract_data.captures(symbol);
 
+    println!("{:?}", groups);
+    println!("{:?}", symbol);
+
     if !symbol.contains("<") || !symbol.contains(">") {
         unsafe {
             TERMINALS.push_back(symbol.to_string());
-            while !QUEUED_TERMINALS.is_empty() {
-                TERMINALS.push_back(QUEUED_TERMINALS.pop_front().unwrap().to_string());
-            }
+            // while !QUEUED_TERMINALS.is_empty() {
+            //     TERMINALS.push_back(QUEUED_TERMINALS.pop_front().unwrap().to_string());
+            // }
         }
     }
 
@@ -61,10 +64,14 @@ fn load_grammar() {
     unsafe {
         GRAMMAR.insert(
             "<expr>",
-            vec!["<int><symbol><int>", "(<expr><symbol><expr>)"],
+            vec!["<int><symbol><int>", "(<int><symbol><int>)"],
+        );
+        GRAMMAR.insert(
+            "<expr2>",
+            vec!["(<expr>)"],
         );
         GRAMMAR.insert("<int>", vec!["<digit>", "-<digit>", "<float>"]);
-        GRAMMAR.insert("<float>", vec!["<digit>.<digit>"]);
+        GRAMMAR.insert("<float>", vec!["<digit>.<digit>", "-<digit>.<digit>"]);
         GRAMMAR.insert("<symbol>", vec!["+", "-", "*", "/"]);
         GRAMMAR.insert(
             "<digit>",
@@ -77,12 +84,18 @@ fn main() {
     load_grammar();
 
     let mut rng = rand::thread_rng();
-    let start = unsafe { GRAMMAR.get("<expr>") };
+    let start = unsafe { GRAMMAR.get("<expr2>") };
+    let max_iterations = 3;
 
     if start.is_some() {
-        let possible_expansions = start.unwrap();
-        let expansion = possible_expansions.index(rng.gen_range(0..possible_expansions.len()));
-        expand_symbol(expansion)
+
+        let iterations = rng.gen_range(1..max_iterations);
+
+        for _ in 0..iterations {
+            let possible_expansions = start.unwrap();
+            let expansion = possible_expansions.index(rng.gen_range(0..possible_expansions.len()));
+            expand_symbol(expansion)
+        }
     }
 
     unsafe {
