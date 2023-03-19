@@ -1,6 +1,6 @@
 # RustyGrams
 
-Simple Grammar Using Rust
+Simple Grammar Fuzzer Using Rust
 
 ## Pros
 * Extensible Grammar Fuzzer in ~100 LoC
