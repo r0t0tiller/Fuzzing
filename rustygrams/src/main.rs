@@ -1,13 +1,12 @@
 use rand::Rng;
 use regex::Regex;
-use std::{collections::BTreeMap, collections::VecDeque, ops::Index};
+use std::{collections::VecDeque, ops::Index};
 
-static mut GRAMMAR: BTreeMap<&str, Vec<&str>> = BTreeMap::new();
+mod grammar;
+use grammar::*;
+
 static mut TERMINALS: VecDeque<String> = VecDeque::new();
 
-// Pass in a symbol
-// Take any non-terminal data
-// Continue expanding
 fn expand_symbol(symbol: &str) {
     let mut rng = rand::thread_rng();
     let extract_data = Regex::new(r"(.*)(<[a-zA-Z_]*>)(.*)").unwrap();
@@ -49,41 +48,16 @@ fn expand_symbol(symbol: &str) {
     }
 }
 
-fn load_grammar() {
-    unsafe {
-        GRAMMAR.insert(
-            "<expr>",
-            vec![
-                "<int><symbol><int>",
-                "(<int><symbol><int>)",
-                "(<expr><expr>)",
-            ],
-        );
-        GRAMMAR.insert("<int>", vec!["<digit>", "-<digit>", "<float>"]);
-        GRAMMAR.insert("<float>", vec!["<digit>.<digit>", "-<digit>.<digit>"]);
-        GRAMMAR.insert("<symbol>", vec!["+", "-", "*", "/"]);
-        GRAMMAR.insert(
-            "<digit>",
-            vec!["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
-        );
-    }
-}
-
 fn main() {
-    load_grammar();
+    load_json_grammar();
 
     let mut rng = rand::thread_rng();
-    let start = unsafe { GRAMMAR.get("<expr>") };
-    let max_iterations = 100;
+    let start = unsafe { GRAMMAR.get("<JSON>") };
 
     if start.is_some() {
-        let iterations = rng.gen_range(1..max_iterations);
-
-        for _ in 0..iterations {
-            let possible_expansions = start.unwrap();
-            let expansion = possible_expansions.index(rng.gen_range(0..possible_expansions.len()));
-            expand_symbol(expansion)
-        }
+        let possible_expansions = start.unwrap();
+        let expansion = possible_expansions.index(rng.gen_range(0..possible_expansions.len()));
+        expand_symbol(expansion)
     }
 
     unsafe {
