@@ -4,7 +4,6 @@ use std::{collections::BTreeMap, collections::VecDeque, ops::Index};
 
 static mut GRAMMAR: BTreeMap<&str, Vec<&str>> = BTreeMap::new();
 static mut TERMINALS: VecDeque<String> = VecDeque::new();
-static mut QUEUED_TERMINALS: VecDeque<String> = VecDeque::new();
 
 // Pass in a symbol
 // Take any non-terminal data
@@ -14,15 +13,9 @@ fn expand_symbol(symbol: &str) {
     let extract_data = Regex::new(r"(.*)(<[a-zA-Z_]*>)(.*)").unwrap();
     let groups = extract_data.captures(symbol);
 
-    println!("{:?}", groups);
-    println!("{:?}", symbol);
-
     if !symbol.contains("<") || !symbol.contains(">") {
         unsafe {
             TERMINALS.push_back(symbol.to_string());
-            // while !QUEUED_TERMINALS.is_empty() {
-            //     TERMINALS.push_back(QUEUED_TERMINALS.pop_front().unwrap().to_string());
-            // }
         }
     }
 
@@ -41,14 +34,12 @@ fn expand_symbol(symbol: &str) {
                 unsafe { TERMINALS.push_back(group_data_left.to_string()) };
             }
 
-            if !group_data_right.contains(" ") {
-                unsafe { QUEUED_TERMINALS.push_back(group_data_right.to_string()) };
-            }
-
             let new_symbol = unsafe { GRAMMAR.get(group_data_middle) }.unwrap();
             let new_expansion = new_symbol.index(rng.gen_range(0..new_symbol.len()));
 
             expand_symbol(new_expansion);
+
+            unsafe { TERMINALS.push_back(group_data_right.to_string()) };
         } else {
             let new_symbol = unsafe { GRAMMAR.get(symbol) };
             if new_symbol.is_some() {
@@ -64,11 +55,11 @@ fn load_grammar() {
     unsafe {
         GRAMMAR.insert(
             "<expr>",
-            vec!["<int><symbol><int>", "(<int><symbol><int>)"],
-        );
-        GRAMMAR.insert(
-            "<expr2>",
-            vec!["(<expr>)"],
+            vec![
+                "<int><symbol><int>",
+                "(<int><symbol><int>)",
+                "(<expr><expr>)",
+            ],
         );
         GRAMMAR.insert("<int>", vec!["<digit>", "-<digit>", "<float>"]);
         GRAMMAR.insert("<float>", vec!["<digit>.<digit>", "-<digit>.<digit>"]);
@@ -84,11 +75,10 @@ fn main() {
     load_grammar();
 
     let mut rng = rand::thread_rng();
-    let start = unsafe { GRAMMAR.get("<expr2>") };
-    let max_iterations = 3;
+    let start = unsafe { GRAMMAR.get("<expr>") };
+    let max_iterations = 100;
 
     if start.is_some() {
-
         let iterations = rng.gen_range(1..max_iterations);
 
         for _ in 0..iterations {
