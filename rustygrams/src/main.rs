@@ -14,9 +14,7 @@ fn expand_symbol(symbol: &str) {
     let groups = extract_data.captures(symbol);
 
     if !symbol.contains("<") || !symbol.contains(">") {
-        unsafe {
-            TERMINALS.push_back(symbol.to_string());
-        }
+        unsafe { TERMINALS.push_back(symbol.to_string()) };
     }
 
     if symbol.contains("<") || symbol.contains(">") {
