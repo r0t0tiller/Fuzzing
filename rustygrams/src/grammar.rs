@@ -27,7 +27,7 @@ pub fn load_expr_grammar() {
 pub fn load_json_grammar() {
     unsafe {
         GRAMMAR.insert("<JSON>", vec!["<OBJECT>", "<ARRAY>"]);
-        GRAMMAR.insert("<OBJECT>", vec!["{}", "{<MEMBERS>}"]);
+        GRAMMAR.insert("<OBJECT>", vec!["{}", "{<MEMBERS>}", "[<JSON>]"]);
         GRAMMAR.insert("<MEMBERS>", vec!["<PAIR>", "<PAIR>,<MEMBERS>"]);
         GRAMMAR.insert("<PAIR>", vec!["<STRING>:<VALUE>"]);
         GRAMMAR.insert("<ARRAY>", vec!["[]", "[<ELEMENTS>]"]);
